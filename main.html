@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>财务云记账管理系统</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div id="app">
+    <section id="main-view" class="view">
+      <header class="app-header">
+        <div class="brand">财务云记账管理系统</div>
+        <div class="spacer"></div>
+        <div class="user-area">
+          <span id="current-user"></span>
+          <button id="logout-btn" class="link">退出</button>
+        </div>
+      </header>
+      <div class="app-body">
+        <aside class="sidebar" id="sidebar"></aside>
+        <main class="content">
+          <div class="tabs" id="tabs"></div>
+          <div class="tab-content" id="tab-content"></div>
+        </main>
+      </div>
+    </section>
+  </div>
+
+  <script src="app.js" type="module"></script>
+  </body>
+</html>

@@ -1,6 +1,10 @@
+<<<<<<< HEAD
 {
   "cleanUrls": true,
   "headers": [
     { "source": "/(.*)", "headers": [{"key":"Access-Control-Allow-Origin","value":"*"}] }
   ]
 }
+=======
+{"rewrites":[{"source":"/(.*)","destination":"/index.html"}]}
+>>>>>>> 698da5b (Initial commit: 长治三毛业务对接平台)
