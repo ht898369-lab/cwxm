@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>长治三毛业务数据中台</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <section id="biz-center" class="view" style="padding:0 24px">
+    <div style="width:90%;margin:5px auto 0">
+      <header class="app-header" style="border-radius:12px;box-shadow:var(--shadow)">
+        <div class="brand">长治三毛业务数据中台</div>
+        <div class="spacer"></div>
+        <div class="user-area"><span id="center-user"></span><button id="center-logout" class="link">退出</button></div>
+      </header>
+      <div class="panel" style="margin:12px 0 0;box-shadow:var(--shadow)">
+        <div style="font-size:16px;font-weight:600;margin-bottom:10px;color:#111827">业务操作</div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:12px">
+          <button id="fetch-btn" class="primary" style="width:200px">获取业务数据</button>
+          <button class="secondary hover-lift" style="width:200px">原材料入库</button>
+          <button class="secondary hover-lift" style="width:200px">生产领料出库</button>
+          <button class="secondary hover-lift" style="width:200px">产成品入库</button>
+          <button class="secondary hover-lift" style="width:200px">销售出口(调拨)</button>
+          <button class="secondary hover-lift" style="width:200px">销售出口(配送)</button>
+          <span id="loading" class="hint" style="display:none">加载中...</span>
+        </div>
+        <div id="error-box" class="error" style="margin-top:14px;padding:10px;border-radius:10px;background:#fef2f2;border:1px solid #fecaca"></div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const API='http://localhost:3000';
+    const logoutBtn=document.getElementById('center-logout'); if(logoutBtn){logoutBtn.onclick=()=>{localStorage.removeItem('user'); localStorage.removeItem('token'); window.location.href='/';}};
+    const fetchBtn=document.getElementById('fetch-btn');
+    const errorBox=document.getElementById('error-box');
+    const loading=document.getElementById('loading');
+    const token=localStorage.getItem('token'); const user=localStorage.getItem('user'); if(!token||!user){window.location.href='/';}
+    document.getElementById('center-user').textContent=user||'';
+    const setLoading=(b)=>{if(loading){loading.style.display=b?'inline-block':'none';} if(fetchBtn){fetchBtn.disabled=b;}}
+    if(fetchBtn){
+      fetchBtn.onclick=async()=>{
+        errorBox.textContent=''; setLoading(true);
+        try{
+          const r=await fetch(`${API}/api/timekay`);
+          const txt=await r.text(); let obj=null; try{obj=JSON.parse(txt);}catch(e){obj=null;}
+          if(!obj||obj.State!==true||!obj.Data||!obj.Data.TimeKay){ errorBox.textContent=txt; setLoading(false); return; }
+          const B1=obj.Data.TimeKay;
+          const r2=await fetch(`${API}/api/cardinfo`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({B1})});
+          const data=await r2.json();
+          const pack={B1:data?.req?.B1||B1, N1:data?.req?.N1||'', M1:data?.req?.M1||'', C1:data?.req?.C1||'', resp:data?.resp};
+          sessionStorage.setItem('bizResult', JSON.stringify(pack));
+          window.location.href='/display.html';
+        }catch(e){ errorBox.textContent='网络异常，请稍后重试'; }
+        finally{ setLoading(false); }
+      };
+    }
+  </script>
+</body>
+</html>

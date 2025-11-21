@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>长治三毛业务数据采集展示</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .kv{display:flex;gap:8px;align-items:center;justify-content:flex-start;margin:6px 0;color:#0f172a}
+    .kv .label{color:#6b7280}
+    .container{max-width:1200px;margin:0 auto}
+    pre{background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:12px;overflow:auto;color:#111827}
+    table{width:100%;border-collapse:collapse;background:#fff;border:1px solid #e5e7eb;border-radius:12px;overflow:hidden}
+    th,td{border-bottom:1px solid #e5e7eb;padding:8px;text-align:left;color:#111827}
+  </style>
+</head>
+<body>
+  <section id="biz-display" class="view" style="padding-top:12px">
+    <div class="container" style="width:95%;max-width:1400px">
+      <header class="app-header">
+        <div class="brand">长治三毛业务数据采集展示</div>
+        <div class="spacer"></div>
+        <div class="user-area"><button id="display-back" class="secondary">返回中台</button><button id="display-logout" class="link">退出</button></div>
+      </header>
+      <div class="panel" style="margin-top:12px">
+        <div class="kv"><span class="label">TimeKay:</span><span id="val-b1"></span><span class="label">1分钟内有效</span></div>
+        <div class="kv"><span class="label">MAC:</span><span id="val-m1"></span></div>
+        <div class="kv"><span class="label">调用地址:</span><span id="val-c1"></span></div>
+        <div class="kv"><span class="label">拼接串:</span><span id="val-n1"></span></div>
+        <div style="height:12px"></div>
+        <div style="margin:8px 0;font-size:14px;font-weight:600;color:#111827">从长治三毛业务系统采集到的数据如下：</div>
+        <div style="margin:8px 0">
+          <div class="label">原始返回JSON：</div>
+          <pre id="raw-json"></pre>
+        </div>
+        <div style="margin:8px 0">
+          <div class="label">Data表格：</div>
+          <table>
+            <thead>
+              <tr>
+                <th>业务编号</th><th>业务类型</th><th>WXOpenID</th><th>Balance</th><th>Score</th><th>ValidTime</th><th>State</th><th>IssueTime</th><th>Name</th><th>Mobile</th><th>Sex</th><th>BirthDate</th><th>UpTime</th>
+              </tr>
+            </thead>
+            <tbody id="data-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const rawBox=document.getElementById('raw-json');
+    const tB1=document.getElementById('val-b1');
+    const tM1=document.getElementById('val-m1');
+    const tC1=document.getElementById('val-c1');
+    const tN1=document.getElementById('val-n1');
+    const tableBody=document.getElementById('data-tbody');
+    const backBtn=document.getElementById('display-back'); if(backBtn){backBtn.onclick=()=>{window.location.href='/center.html';}};
+    const logoutBtn=document.getElementById('display-logout'); if(logoutBtn){logoutBtn.onclick=()=>{localStorage.removeItem('user'); localStorage.removeItem('token'); window.location.href='/';}};
+    try{
+      const pack=JSON.parse(sessionStorage.getItem('bizResult')||'{}');
+      tB1.textContent=pack.B1||'';
+      tM1.textContent=pack.M1||'';
+      tC1.textContent=pack.C1||'';
+      tN1.textContent=pack.N1||'';
+      rawBox.textContent=typeof pack.resp==='string'?pack.resp:JSON.stringify(pack.resp||{}, null, 2);
+      const data=pack?.resp?.Data;
+      const records=Array.isArray(data)?data:(data?[data]:[]);
+      if(records.length===0){
+        const tr=document.createElement('tr'); const td=document.createElement('td'); td.colSpan=13; td.textContent='暂无数据'; tr.appendChild(td); tableBody.appendChild(tr);
+      }else{
+        records.forEach(it=>{
+          const row=[it.CardNo,it.CardType,it.WXOpenID,it.Balance,it.Score,it.ValidTime,it.State,it.IssueTime,it.Name,it.Mobile,it.Sex,it.BirthDate,it.UpTime];
+          const tr=document.createElement('tr'); row.forEach(v=>{const td=document.createElement('td'); td.textContent=(v==null?'':String(v)); tr.appendChild(td);}); tableBody.appendChild(tr);
+        });
+      }
+    }catch(e){ rawBox.textContent='无有效结果'; }
+  </script>
+</body>
+</html>
