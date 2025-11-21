@@ -1,5 +1,5 @@
 const state={user:null,code:null,tabs:[],activeTab:null,token:null,menu:null};
-const API='http://localhost:3000';
+const API=window.location.origin;
 const defaultMenu={
   "凭证":["新增凭证","查看凭证","凭证汇总表","凭证回收站"],
   "账簿":["总账","明细账","余额表","序时账","多栏账","科目辅助明细账","科目辅助余额表","辅助核算明细账","辅助核算余额表"],
@@ -176,10 +176,14 @@ const initLogin=()=>{
   const toPwd=el("to-password-login"); if(toPwd){toPwd.onclick=()=>{phoneForm.classList.remove("active"); passwordForm.classList.add("active"); const t=[...tabs].find(x=>x.dataset.tab==='password'); if(t){tabs.forEach(x=>x.classList.remove('active')); t.classList.add('active');}}}
   const toPwd2=el("to-password-login2"); if(toPwd2){toPwd2.onclick=()=>{phoneForm.classList.remove("active"); passwordForm.classList.add("active"); const t=[...tabs].find(x=>x.dataset.tab==='password'); if(t){tabs.forEach(x=>x.classList.remove('active')); t.classList.add('active');}}}
   el("password-login-btn").onclick=async()=>{
-    const u=el("username").value||"admin";const p=el("password").value||"123456";
+    const u=(el("username").value||"").trim();
+    const p=(el("password").value||"").trim();
+    const err=el("password-error");
+    if(!u){err.textContent="账号不能为空";return;}
+    if(!p){err.textContent="密码不能为空";return;}
     try{const r=await fetch(`${API}/api/login`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username:u,password:p})});
-      if(r.ok){const data=await r.json();state.token=data.token;loginSuccess(data.user);el("password-error").textContent="";}else{el("password-error").textContent="用户名或密码错误";}}
-    catch(e){el("password-error").textContent="网络错误";}
+      if(r.ok){const data=await r.json();state.token=data.token;err.textContent="";loginSuccess(data.user);}else{ if(r.status===404||r.status===405||r.status>=500){err.textContent="服务不可用或未部署";} else {err.textContent="用户名或密码错误";} }}
+    catch(e){err.textContent="网络错误";}
   };
   el("send-code-btn").onclick=async()=>{
     const phone=el("phone").value; if(!phone){el("code-hint").textContent="请输入手机号";return;}

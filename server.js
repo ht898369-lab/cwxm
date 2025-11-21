@@ -15,7 +15,7 @@ try{
     connectionLimit:5,
   });
 }catch(e){mysqlPool=null;}
-const state={codes:new Map(),vouchers:[],vid:1};
+const state={codes:new Map(),vouchers:[],vid:1,auth:{password:'123456'}};
 const menu={
   "凭证":["新增凭证","查看凭证","凭证汇总表","凭证回收站"],
   "账簿":["总账","明细账","余额表","序时账","多栏账","科目辅助明细账","科目辅助余额表","辅助核算明细账","辅助核算余额表"],
@@ -113,7 +113,16 @@ const routes=async(req,res)=>{
   if(pathname==='/api/login'&&req.method==='POST'){
     const body=await getBody(req);
     const {username,password}=body;
-    if((username||'')==='admin'&&(password||'')==='123456'){ok(res,{user:'admin',token:crypto.randomUUID()});}else{bad(res,401,'invalid');}
+    if((username||'')==='admin'&&(password||'')===state.auth.password){ok(res,{user:'admin',token:crypto.randomUUID()});}else{bad(res,401,'invalid');}
+    return;
+  }
+  if(pathname==='/api/change-password'&&req.method==='POST'){
+    const body=await getBody(req);
+    const {oldPassword,newPassword}=body||{};
+    if(!oldPassword||!newPassword){bad(res,400,'required');return;}
+    if(oldPassword!==state.auth.password){bad(res,401,'invalid');return;}
+    state.auth.password=String(newPassword);
+    ok(res,{ok:true});
     return;
   }
   if(pathname==='/api/timekay'&&req.method==='GET'){
