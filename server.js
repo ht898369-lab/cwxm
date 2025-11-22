@@ -90,11 +90,23 @@ const routes=async(req,res)=>{
     try{const html=fs.readFileSync(path.join(__dirname,'index.html'),'utf-8'); res.statusCode=200; res.setHeader('Content-Type','text/html; charset=utf-8'); res.setHeader('Access-Control-Allow-Origin','*'); res.setHeader('Access-Control-Allow-Headers','Content-Type, Authorization'); res.setHeader('Access-Control-Allow-Methods','GET,POST,DELETE,OPTIONS'); res.end(html);}catch(e){bad(res,404,'not_found');}
     return;
   }
+  if(req.method==='GET' && pathname==='/index'){
+    try{const html=fs.readFileSync(path.join(__dirname,'index.html'),'utf-8'); res.statusCode=200; res.setHeader('Content-Type','text/html; charset=utf-8'); res.setHeader('Access-Control-Allow-Origin','*'); res.setHeader('Access-Control-Allow-Headers','Content-Type, Authorization'); res.setHeader('Access-Control-Allow-Methods','GET,POST,DELETE,OPTIONS'); res.end(html);}catch(e){bad(res,404,'not_found');}
+    return;
+  }
   if(req.method==='GET' && pathname==='/center.html'){
     try{const html=fs.readFileSync(path.join(__dirname,'center.html'),'utf-8'); res.statusCode=200; res.setHeader('Content-Type','text/html; charset=utf-8'); res.setHeader('Access-Control-Allow-Origin','*'); res.setHeader('Access-Control-Allow-Headers','Content-Type, Authorization'); res.setHeader('Access-Control-Allow-Methods','GET,POST,DELETE,OPTIONS'); res.end(html);}catch(e){bad(res,404,'not_found');}
     return;
   }
+  if(req.method==='GET' && pathname==='/center'){
+    try{const html=fs.readFileSync(path.join(__dirname,'center.html'),'utf-8'); res.statusCode=200; res.setHeader('Content-Type','text/html; charset=utf-8'); res.setHeader('Access-Control-Allow-Origin','*'); res.setHeader('Access-Control-Allow-Headers','Content-Type, Authorization'); res.setHeader('Access-Control-Allow-Methods','GET,POST,DELETE,OPTIONS'); res.end(html);}catch(e){bad(res,404,'not_found');}
+    return;
+  }
   if(req.method==='GET' && pathname==='/display.html'){
+    try{const html=fs.readFileSync(path.join(__dirname,'display.html'),'utf-8'); res.statusCode=200; res.setHeader('Content-Type','text/html; charset=utf-8'); res.setHeader('Access-Control-Allow-Origin','*'); res.setHeader('Access-Control-Allow-Headers','Content-Type, Authorization'); res.setHeader('Access-Control-Allow-Methods','GET,POST,DELETE,OPTIONS'); res.end(html);}catch(e){bad(res,404,'not_found');}
+    return;
+  }
+  if(req.method==='GET' && pathname==='/display'){
     try{const html=fs.readFileSync(path.join(__dirname,'display.html'),'utf-8'); res.statusCode=200; res.setHeader('Content-Type','text/html; charset=utf-8'); res.setHeader('Access-Control-Allow-Origin','*'); res.setHeader('Access-Control-Allow-Headers','Content-Type, Authorization'); res.setHeader('Access-Control-Allow-Methods','GET,POST,DELETE,OPTIONS'); res.end(html);}catch(e){bad(res,404,'not_found');}
     return;
   }
@@ -441,4 +453,6 @@ const routes=async(req,res)=>{
   bad(res,404,'not_found');
 };
 const server=http.createServer((req,res)=>{routes(req,res);});
-server.listen(3000,'0.0.0.0');
+const PORT=(process.env.PORT?Number(process.env.PORT):3000);
+server.listen(PORT,'0.0.0.0');
+try{console.log('server listening on', PORT);}catch(e){}
