@@ -110,6 +110,30 @@ const routes=async(req,res)=>{
     try{const html=fs.readFileSync(path.join(__dirname,'display.html'),'utf-8'); res.statusCode=200; res.setHeader('Content-Type','text/html; charset=utf-8'); res.setHeader('Access-Control-Allow-Origin','*'); res.setHeader('Access-Control-Allow-Headers','Content-Type, Authorization'); res.setHeader('Access-Control-Allow-Methods','GET,POST,DELETE,OPTIONS'); res.end(html);}catch(e){bad(res,404,'not_found');}
     return;
   }
+  if(req.method==='GET' && pathname==='/display_all.html'){
+    try{const html=fs.readFileSync(path.join(__dirname,'display_all.html'),'utf-8'); res.statusCode=200; res.setHeader('Content-Type','text/html; charset=utf-8'); res.setHeader('Access-Control-Allow-Origin','*'); res.setHeader('Access-Control-Allow-Headers','Content-Type, Authorization'); res.setHeader('Access-Control-Allow-Methods','GET,POST,DELETE,OPTIONS'); res.end(html);}catch(e){bad(res,404,'not_found');}
+    return;
+  }
+  if(req.method==='GET' && pathname==='/display_all'){
+    try{const html=fs.readFileSync(path.join(__dirname,'display_all.html'),'utf-8'); res.statusCode=200; res.setHeader('Content-Type','text/html; charset=utf-8'); res.setHeader('Access-Control-Allow-Origin','*'); res.setHeader('Access-Control-Allow-Headers','Content-Type, Authorization'); res.setHeader('Access-Control-Allow-Methods','GET,POST,DELETE,OPTIONS'); res.end(html);}catch(e){bad(res,404,'not_found');}
+    return;
+  }
+  if(req.method==='GET' && pathname==='/display_delivery.html'){
+    try{const html=fs.readFileSync(path.join(__dirname,'display_delivery.html'),'utf-8'); res.statusCode=200; res.setHeader('Content-Type','text/html; charset=utf-8'); res.setHeader('Access-Control-Allow-Origin','*'); res.setHeader('Access-Control-Allow-Headers','Content-Type, Authorization'); res.setHeader('Access-Control-Allow-Methods','GET,POST,DELETE,OPTIONS'); res.end(html);}catch(e){bad(res,404,'not_found');}
+    return;
+  }
+  if(req.method==='GET' && pathname==='/display_delivery'){
+    try{const html=fs.readFileSync(path.join(__dirname,'display_delivery.html'),'utf-8'); res.statusCode=200; res.setHeader('Content-Type','text/html; charset=utf-8'); res.setHeader('Access-Control-Allow-Origin','*'); res.setHeader('Access-Control-Allow-Headers','Content-Type, Authorization'); res.setHeader('Access-Control-Allow-Methods','GET,POST,DELETE,OPTIONS'); res.end(html);}catch(e){bad(res,404,'not_found');}
+    return;
+  }
+  if(req.method==='GET' && pathname==='/display_transfer.html'){
+    try{const html=fs.readFileSync(path.join(__dirname,'display_transfer.html'),'utf-8'); res.statusCode=200; res.setHeader('Content-Type','text/html; charset=utf-8'); res.setHeader('Access-Control-Allow-Origin','*'); res.setHeader('Access-Control-Allow-Headers','Content-Type, Authorization'); res.setHeader('Access-Control-Allow-Methods','GET,POST,DELETE,OPTIONS'); res.end(html);}catch(e){bad(res,404,'not_found');}
+    return;
+  }
+  if(req.method==='GET' && pathname==='/display_transfer'){
+    try{const html=fs.readFileSync(path.join(__dirname,'display_transfer.html'),'utf-8'); res.statusCode=200; res.setHeader('Content-Type','text/html; charset=utf-8'); res.setHeader('Access-Control-Allow-Origin','*'); res.setHeader('Access-Control-Allow-Headers','Content-Type, Authorization'); res.setHeader('Access-Control-Allow-Methods','GET,POST,DELETE,OPTIONS'); res.end(html);}catch(e){bad(res,404,'not_found');}
+    return;
+  }
   if(req.method==='GET' && pathname==='/main.html'){
     try{const html=fs.readFileSync(path.join(__dirname,'main.html'),'utf-8'); res.statusCode=200; res.setHeader('Content-Type','text/html; charset=utf-8'); res.setHeader('Access-Control-Allow-Origin','*'); res.setHeader('Access-Control-Allow-Headers','Content-Type, Authorization'); res.setHeader('Access-Control-Allow-Methods','GET,POST,DELETE,OPTIONS'); res.end(html);}catch(e){bad(res,404,'not_found');}
     return;
@@ -139,7 +163,9 @@ const routes=async(req,res)=>{
   }
   if(pathname==='/api/timekay'&&req.method==='GET'){
     try{
-      const opts={hostname:'inter.bak365.cn',path:'/Service.ashx?Type=GetTimeKay',method:'GET'};
+      const appNo=(query&& (query.AppNo||query.appno))||'Test';
+      const pathUrl=`/Service.ashx?Type=GetTimeKay&AppNo=${encodeURIComponent(appNo)}`;
+      const opts={hostname:'inter.bak365.cn',path:pathUrl,method:'GET'};
       const chunks=[];
       const req2=http.request(opts,(r)=>{r.on('data',d=>chunks.push(d)); r.on('end',()=>{const txt=Buffer.concat(chunks).toString('utf-8'); let data=null; try{data=JSON.parse(txt||'{}');}catch(e){data={State:false,Msg:'非JSON响应',Data:{},raw:txt};} ok(res,data);});});
       req2.on('error',()=>bad(res,502,'upstream_error')); req2.end();

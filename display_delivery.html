@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>长治三毛业务数据采集展示 · 配送</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .kv{display:flex;gap:8px;align-items:center;justify-content:flex-start;margin:6px 0;color:#0f172a}
+    .kv .label{color:#6b7280}
+    .container{max-width:1200px;margin:0 auto}
+    pre{background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:12px;overflow:auto;color:#111827}
+    table{width:100%;border-collapse:collapse;background:#fff;border:1px solid #e5e7eb;border-radius:12px;overflow:hidden}
+    th,td{border-bottom:1px solid #e5e7eb;padding:8px;text-align:left;color:#111827}
+  </style>
+</head>
+<body>
+  <section id="biz-display-delivery" class="view" style="padding-top:12px">
+    <div class="container" style="width:95%;max-width:1400px">
+      <header class="app-header">
+        <div style="display:flex;align-items:center;gap:12px">
+          <div style="width:46px;height:46px;display:flex;align-items:center;justify-content:center">
+            <svg viewBox="0 0 64 64" width="46" height="46" aria-hidden="true">
+              <defs>
+                <radialGradient id="bg" cx="0.5" cy="0.4" r="0.7">
+                  <stop offset="0%" stop-color="#7cc0ff"/>
+                  <stop offset="100%" stop-color="#4f46e5"/>
+                </radialGradient>
+                <linearGradient id="cloud" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="#ffffff"/>
+                  <stop offset="100%" stop-color="#eef2ff"/>
+                </linearGradient>
+              </defs>
+              <circle cx="32" cy="32" r="28" fill="url(#bg)"/>
+              <g fill="#ffffff" opacity="0.9">
+                <circle cx="18" cy="20" r="1.5"/>
+                <circle cx="26" cy="14" r="1.2"/>
+                <circle cx="40" cy="18" r="1.4"/>
+                <circle cx="48" cy="26" r="1.1"/>
+                <circle cx="22" cy="30" r="1"/>
+              </g>
+              <path d="M20 40c0-4 3.5-7 7.5-7 .3-5.5 4.8-9.5 10.1-9.5 5.2 0 9.5 3.8 10 9 4.1.2 7.4 3.4 7.4 7.3 0 4.1-3.6 7.4-8 7.4H26.5c-3.6 0-6.5-2.9-6.5-6.2z" fill="url(#cloud)" stroke="#e5e7eb" stroke-width="1.2"/>
+              <path d="M12 28 l2 -4 l2 4 l4 2 l-4 2 l-2 4 l-2 -4 l-4 -2z" fill="#ffd166" opacity="0.8"/>
+            </svg>
+          </div>
+          <div style="display:flex;align-items:center;gap:16px">
+            <span style="font-weight:700;color:#111827;font-size:28px;line-height:1.1">星空云</span>
+            <div class="brand">长治三毛业务数据采集展示 · 配送</div>
+          </div>
+        </div>
+        <div class="spacer"></div>
+        <div class="user-area"><button id="display-delivery-back" class="secondary" onclick="window.location.href='/center'">返回中台</button><button id="display-delivery-logout" class="link" onclick="localStorage.removeItem('user');localStorage.removeItem('token');window.location.href='/index'">退出</button></div>
+      </header>
+      <div class="panel" style="margin-top:12px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;color:#111827">
+          <div style="font-size:16px;font-weight:600">销售出库(配送)</div>
+          <button id="collect-btn" class="primary" style="width:100px">采集</button>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:16px;align-items:center">
+          <div class="kv" style="display:flex;align-items:center;gap:8px;white-space:nowrap"><span class="label" style="white-space:nowrap">客户编号:</span><input id="input-cust" type="text" placeholder="请输入客户编号" value="shijisanmao_fina" style="width:140px" readonly /></div>
+          <div class="kv" style="display:flex;align-items:center;gap:8px;white-space:nowrap"><span class="label" style="white-space:nowrap">业务参数:</span><input id="input-param" type="text" placeholder="请输入业务参数" value="FinaShopMove" style="width:140px" readonly /></div>
+          <div class="kv" style="display:flex;align-items:center;gap:8px;white-space:nowrap"><span class="label" style="white-space:nowrap">业务日期:</span><input id="input-date" type="date" style="width:140px" /></div>
+          <div class="kv" style="display:flex;align-items:center;gap:8px;white-space:nowrap"><span class="label" style="white-space:nowrap">开单门店:</span><input id="input-store" type="text" placeholder="请输入开单门店" style="width:140px" /></div>
+          <div class="kv" style="display:flex;align-items:center;gap:8px;white-space:nowrap"><span class="label" style="white-space:nowrap">出入库类型:</span><input id="input-type" type="text" placeholder="请输入出入库类型" value="配送入库" style="width:140px" readonly /></div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:16px;align-items:center;margin-top:12px">
+          <div class="kv" style="display:flex;align-items:center;gap:8px;white-space:nowrap"><span class="label" style="white-space:nowrap">客户密钥:</span><input id="input-secret" type="text" placeholder="请输入客户密钥" value="c5L4XvtD4uX8xIBJ1w" style="width:140px" readonly /></div>
+          <div class="kv" style="display:flex;align-items:center;gap:8px;white-space:nowrap;grid-column:2"><span class="label" style="white-space:nowrap">时间戳:</span><input id="input-ts" type="text" placeholder="请输入时间戳" style="width:140px" /></div>
+          <div class="kv" style="display:flex;align-items:center;gap:8px;white-space:nowrap;grid-column:3"><span class="label" style="white-space:nowrap">MAC:</span><input id="input-mac" type="text" placeholder="请输入MAC" style="width:140px" /></div>
+          <div class="kv" style="display:flex;align-items:center;gap:8px;white-space:nowrap;grid-column:4"><span class="label" style="white-space:nowrap">请求体:</span><input id="input-api" type="text" placeholder="请输入请求体" value="{&quot;OptTime&quot;:&quot;2025-11-11&quot;,&quot;ShopNo&quot;:&quot;1002&quot;,&quot;MoveType&quot;:&quot;1&quot;}" style="width:140px" /></div>
+          <div class="kv" style="display:flex;align-items:center;gap:8px;white-space:nowrap;grid-column:5"><span class="label" style="white-space:nowrap">拼接串:</span><input id="input-n1" type="text" placeholder="拼接串" style="width:140px" readonly /></div>
+        </div>
+        <div class="kv" style="display:flex;align-items:center;gap:8px;white-space:nowrap;margin-top:12px">
+          <span class="label" style="white-space:nowrap">API:</span>
+          <input id="input-api-url" type="text" placeholder="请输入 API 地址或路径" style="width:100%" />
+        </div>
+        <hr style="border:none;height:2px;background:var(--border);margin-top:12px" />
+      </div>
+    </div>
+  </section>
+  <script>
+    const backBtn=document.getElementById('display-delivery-back'); if(backBtn){backBtn.onclick=()=>{window.location.href='/center.html';}};
+    const logoutBtn=document.getElementById('display-delivery-logout'); if(logoutBtn){logoutBtn.onclick=()=>{localStorage.removeItem('user'); localStorage.removeItem('token'); window.location.href='/';}};
+    const dateInput=document.getElementById('input-date'); if(dateInput){ const normalize=()=>{ dateInput.value=(dateInput.value||'').replace(/\//g,'-'); }; dateInput.addEventListener('input', normalize); dateInput.addEventListener('change', normalize); dateInput.addEventListener('blur', normalize); }
+    const syncWidths=()=>{
+      const wParam=getComputedStyle(document.getElementById('input-param')).width;
+      const wDate=getComputedStyle(document.getElementById('input-date')).width;
+      const wStore=getComputedStyle(document.getElementById('input-store')).width;
+      const toPx=(s)=>{const n=parseFloat(s);return isNaN(n)?0:n;};
+      const ts=document.getElementById('input-ts'); if(ts&&wParam) ts.style.width=(toPx(wParam)+2)+'px';
+      const mac=document.getElementById('input-mac'); if(mac&&wDate) mac.style.width=wDate;
+      const api=document.getElementById('input-api'); if(api&&wStore) api.style.width=wStore;
+    };
+    syncWidths(); window.addEventListener('resize', syncWidths);
+    let B1='';
+    const md5=function(s){function A(x){return x>>>0}function B(x,c){return((x<<c)|(x>>>32-c))>>>0}function C(q,a,b,x,s,t){return A(B(A(A(q,a)+A(b,x))+t),s)}function D(a,b,c,d,x,s,t){return C(a,(b&c)|(~b&d),x,s,t)}function E(a,b,c,d,x,s,t){return C(a,(b&d)|(c&~d),x,s,t)}function F(a,b,c,d,x,s,t){return C(a,b^c^d,x,s,t)}function G(a,b,c,d,x,s,t){return C(a,c^(b|~d),x,s,t)}function H(str){const n=str.length;const bytes=[];for(let i=0;i<n;i++){const c=str.charCodeAt(i);if(c<128){bytes.push(c);}else if(c<2048){bytes.push((c>>6)|192, (c&63)|128);}else if(c<65536){bytes.push((c>>12)|224, ((c>>6)&63)|128, (c&63)|128);}else{bytes.push((c>>18)|240, ((c>>12)&63)|128, ((c>>6)&63)|128, (c&63)|128);}}return bytes}function I(input){const bytes=H(input);const l=bytes.length;bytes.push(0x80);while((bytes.length%64)!=56){bytes.push(0);}const bitLen=l*8;for(let i=0;i<8;i++){bytes.push((bitLen>>> (8*i)) & 0xff);}let a=0x67452301,b=0xefcdab89,c=0x98badcfe,d=0x10325476;for(let i=0;i<bytes.length;i+=64){const M=new Uint32Array(16);for(let j=0;j<16;j++){M[j]=bytes[i+4*j] | (bytes[i+4*j+1]<<8) | (bytes[i+4*j+2]<<16) | (bytes[i+4*j+3]<<24);}let aa=a,bb=b,cc=c,dd=d;a=D(a,b,c,d,M[0],7,0xd76aa478);d=D(d,a,b,c,M[1],12,0xe8c7b756);c=D(c,d,a,b,M[2],17,0x242070db);b=D(b,c,d,a,M[3],22,0xc1bdceee);a=D(a,b,c,d,M[4],7,0xf57c0faf);d=D(d,a,b,c,M[5],12,0x4787c62a);c=D(c,d,a,b,M[6],17,0xa8304613);b=D(b,c,d,a,M[7],22,0xfd469501);a=D(a,b,c,d,M[8],7,0x698098d8);d=D(d,a,b,c,M[9],12,0x8b44f7af);c=D(c,d,a,b,M[10],17,0xffff5bb1);b=D(b,c,d,a,M[11],22,0x895cd7be);a=D(a,b,c,d,M[12],7,0x6b901122);d=D(d,a,b,c,M[13],12,0xfd987193);c=D(c,d,a,b,M[14],17,0xa679438e);b=D(b,c,d,a,M[15],22,0x49b40821);a=E(a,b,c,d,M[1],5,0xf61e2562);d=E(d,a,b,c,M[6],9,0xc040b340);c=E(c,d,a,b,M[11],14,0x265e5a51);b=E(b,c,d,a,M[0],20,0xe9b6c7aa);a=E(a,b,c,d,M[5],5,0xd62f105d);d=E(d,a,b,c,M[10],9,0x02441453);c=E(c,d,a,b,M[15],14,0xd8a1e681);b=E(b,c,d,a,M[4],20,0xe7d3fbc8);a=E(a,b,c,d,M[9],5,0x21e1cde6);d=E(d,a,b,c,M[14],9,0xc33707d6);c=E(c,d,a,b,M[3],14,0xf4d50d87);b=E(b,c,d,a,M[8],20,0x455a14ed);a=E(a,b,c,d,M[13],5,0xa9e3e905);d=E(d,a,b,c,M[2],9,0xfcefa3f8);c=E(c,d,a,b,M[7],14,0x676f02d9);b=E(b,c,d,a,M[12],20,0x8d2a4c8a);a=F(a,b,c,d,M[5],4,0xfffa3942);d=F(d,a,b,c,M[8],11,0x8771f681);c=F(c,d,a,b,M[11],16,0x6d9d6122);b=F(b,c,d,a,M[14],23,0xfde5380c);a=F(a,b,c,d,M[1],4,0xa4beea44);d=F(d,a,b,c,M[4],11,0x4bdecfa9);c=F(c,d,a,b,M[7],16,0xf6bb4b60);b=F(b,c,d,a,M[10],23,0xbebfbc70);a=F(a,b,c,d,M[13],4,0x289b7ec6);d=F(d,a,b,c,M[0],11,0xeaa127fa);c=F(c,d,a,b,M[3],16,0xd4ef3085);b=F(b,c,d,a,M[6],23,0x04881d05);a=F(a,b,c,d,M[9],4,0xd9d4d039);d=F(d,a,b,c,M[12],11,0xe6db99e5);c=F(c,d,a,b,M[15],16,0x1fa27cf8);b=F(b,c,d,a,M[2],23,0xc4ac5665);a=G(a,b,c,d,M[0],6,0xf4292244);d=G(d,a,b,c,M[7],10,0x432aff97);c=G(c,d,a,b,M[14],15,0xab9423a7);b=G(b,c,d,a,M[5],21,0xfc93a039);a=G(a,b,c,d,M[12],6,0x655b59c3);d=G(d,a,b,c,M[3],10,0x8f0ccc92);c=G(c,d,a,b,M[10],15,0xffeff47d);b=G(b,c,d,a,M[1],21,0x85845dd1);a=A(a+aa);b=A(b+bb);c=A(c+cc);d=A(d+dd);}const hex=n=>('00000000'+n.toString(16)).slice(-8);const digest=(hex(a)+hex(b)+hex(c)+hex(d));return digest.match(/.{2}/g).reverse().join('')};
+    const init=async()=>{
+      try{const r=await fetch('/api/timekay',{method:'GET'});const t=await r.text();let obj=null;try{obj=JSON.parse(t);}catch(e){obj=null}if(!obj||obj.State!==true){alert(t);return;}B1=obj.Data&&obj.Data.TimeKay||'';const ts=document.getElementById('input-ts'); if(ts) ts.value=B1||'';}catch(e){alert('网络异常');}
+    };
+    init();
+    const btn=document.getElementById('collect-btn'); if(btn){btn.onclick=()=>{const cust=document.getElementById('input-cust')?.value||'';const secret=document.getElementById('input-secret')?.value||'';const param=document.getElementById('input-param')?.value||'';const date=document.getElementById('input-date')?.value||'';const store=document.getElementById('input-store')?.value||'';const type=document.getElementById('input-type')?.value||'';const ts=document.getElementById('input-ts')?.value||'';if(!cust||!secret||!param||!date||!store||!type||!ts){alert('必填项不能为空');return;}const OptTime=(date||'').replace(/\//g,'-');const ShopNo=store||'';const MoveType='1';const bodyStr=JSON.stringify({OptTime,ShopNo,MoveType});const bodyInput=document.getElementById('input-api'); if(bodyInput) bodyInput.value=bodyStr;if(B1){const N1=(cust||'')+(secret||'')+bodyStr+(B1||'');const n1Input=document.getElementById('input-n1'); if(n1Input) n1Input.value=N1;const M1=md5(N1);const macInput=document.getElementById('input-mac'); if(macInput) macInput.value=M1;const C1=`http://inter.bak365.cn/Service.ashx?AppNo=Test&Type=CardInfo&MAC=${encodeURIComponent(M1)}`;const apiUrl=document.getElementById('input-api-url'); if(apiUrl) apiUrl.value=C1;}}};
+  </script>
+</body>
+</html>

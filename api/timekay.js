@@ -4,7 +4,10 @@ module.exports = function handler(req, res) {
   res.setHeader('Access-Control-Allow-Methods', 'GET,POST,DELETE,OPTIONS');
   if (req.method === 'OPTIONS') { res.statusCode = 204; res.end(); return; }
   const http = require('http');
-  const opts = { hostname: 'inter.bak365.cn', path: '/Service.ashx?Type=GetTimeKay', method: 'GET' };
+  const url = new URL('http://inter.bak365.cn/Service.ashx?Type=GetTimeKay');
+  const appNo = (req.query && (req.query.AppNo||req.query.appno)) || 'Test';
+  url.searchParams.set('AppNo', appNo);
+  const opts = { hostname: url.hostname, path: url.pathname + url.search, method: 'GET' };
   const chunks = [];
   const r2 = http.request(opts, (r) => {
     r.on('data', (d) => chunks.push(d));

@@ -50,8 +50,9 @@
           <button class="primary" style="width:200px">原材料入库</button>
           <button class="primary" style="width:200px">生产领料出库</button>
           <button class="primary" style="width:200px">产成品入库</button>
-          <button class="primary" style="width:200px">销售出库(调拨)</button>
-          <button class="primary" style="width:200px">销售出库(配送)</button>
+          <button id="transfer-btn" class="primary" style="width:200px">销售出库(调拨)</button>
+          <button id="delivery-btn" class="primary" style="width:200px">销售出库(配送)</button>
+          <button id="start-all-btn" class="primary" style="width:200px">全部启动</button>
           <span id="loading" class="hint" style="display:none">加载中...</span>
         </div>
         <div id="pwd-section" style="margin-top:16px; padding-top:12px; border-top:1px solid #e5e7eb">
@@ -125,6 +126,18 @@
           else{ const t=await r.text(); pwdHint.textContent=t.includes('invalid')?'当前密码错误':'修改失败'; }
         }catch(e){ pwdHint.textContent='网络错误'; }
       };
+    }
+    const startAllBtn=document.getElementById('start-all-btn');
+    if(startAllBtn){
+      startAllBtn.onclick=()=>{ window.location.href='/display_all.html'; };
+    }
+    const transferBtn=document.getElementById('transfer-btn');
+    if(transferBtn){
+      transferBtn.onclick=()=>{ window.location.href='/display_transfer.html'; };
+    }
+    const deliveryBtn=document.getElementById('delivery-btn');
+    if(deliveryBtn){
+      deliveryBtn.onclick=()=>{ window.location.href='/display_delivery.html'; };
     }
   </script>
 </body>
